@@ -1,0 +1,12 @@
+
+
+
+# PREPROCESSAMENTO
+
+# CONTAGEM DE PALAVRAS POR GRUPO EM CADA VARIAVEL
+
+
+# agregar palavras por grupo em agreg_resp
+
+
+# COMPARAR AS agreg_resp CADA GRUPO COM O DOCUMENTO PDF
