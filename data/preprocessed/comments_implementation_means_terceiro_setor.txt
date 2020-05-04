@@ -1,0 +1,3 @@
+category:terceiro setor
+column:comments_implementation_means
+text:

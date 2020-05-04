@@ -1,12 +1,21 @@
+'''
+Paper XXX
 
+@claudioalvesmonteiro 2020
+'''
 
+# import packages
 
-# PREPROCESSAMENTO
+# import text
+arq = open('data/preprocessed/comments_academia.txt', 'r')
+text = arq.readlines()
 
-# CONTAGEM DE PALAVRAS POR GRUPO EM CADA VARIAVEL
+#=======================
+# tratamento do texto
+#=======================
 
-
-# agregar palavras por grupo em agreg_resp
 
 
 # COMPARAR AS agreg_resp CADA GRUPO COM O DOCUMENTO PDF
+
+#https://medium.com/@adriensieg/text-similarities-da019229c894
