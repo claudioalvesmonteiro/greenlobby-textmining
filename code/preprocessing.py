@@ -1,12 +1,12 @@
 '''
 Paper XXX
-
 @claudioalvesmonteiro 2020
 '''
 
 
 # import packages
 import pandas as pd
+import pickle
 
 # import data
 df = pd.read_csv('data/NDC_database.csv')
@@ -22,7 +22,7 @@ df.columns = ['participation', 'category', 'comments', 'comments_implementation_
 def aggText(df, category, column):
     ''' this function return and save the text 
         aggregated by an auxiliary category in
-        a pandas dataframe 
+        a pandas dataframe, as json pickle
     '''
     # select category data
     data = df[df['category'] == category]
@@ -33,15 +33,45 @@ def aggText(df, category, column):
             text += data[column][i] + '\n'
         except:
             print('empty string on line {}.'.format(i)) 
-            
+
+    # apply text cleaning
+    text = cleanTextToken(text)
     # create string of text information
-    text_info ='category:{}\ncolumn:{}\ntext:{}'.format(category, column, text)
-    # save as .txt
-    arq = open('data/preprocessed/{}_{}.txt'.format(column, category.replace(' ', '_')), 'w' )
-    arq.write(text_info)
-    arq.close()    
+    text_info ={'category': category,
+                'column': column,
+                'text': text}
+    # save as json
+    category = category.replace(' ', '_')
+    with open('data/preprocessed/{}_{}.pickle'.format(column, category), 'wb') as fp:
+        pickle.dump(text_info, fp, protocol=pickle.HIGHEST_PROTOCOL)
     return text_info
 
+
+def cleanTextToken(text):
+    ''' this function cleans the text and returns 
+        the words in tokens
+    '''
+    # characters to lower
+    text = text.lower()
+    # remove punctuations
+    from nltk.tokenize import RegexpTokenizer
+    tokenizer = RegexpTokenizer(r'\w+') # preserve alphanumeric and words
+    text = tokenizer.tokenize(text)
+
+    # remove stopwords
+    import nltk
+    from nltk.corpus import stopwords
+    stop = set(stopwords.words('portuguese'))
+    text = [w for w in text if not w in stop]
+
+    # stemmezation
+    from nltk.stem import PorterStemmer 
+    ps = PorterStemmer()
+    text = [ps.stem(word) for word in text]
+    #for i in range(len(text)):
+    #    print(text[i],': ',ps.stem(text[i]))
+    return text
+    
 
 #  apply function to data
 for category in df.category.unique():
