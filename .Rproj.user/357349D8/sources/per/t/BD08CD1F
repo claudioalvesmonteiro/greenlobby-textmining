@@ -1,0 +1,23 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1588700182809.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "3595303606",
+    "id" : "BD08CD1F",
+    "lastKnownWriteTime" : 1588848484,
+    "last_content_update" : 1588848484422,
+    "path" : "~/Documents/Pesquisa/Environment/greenlobby-textmining/code/data-visualization.R",
+    "project_path" : "code/data-visualization.R",
+    "properties" : {
+        "cursorPosition" : "103,38",
+        "scrollLine" : "77",
+        "tempName" : "Untitled1"
+    },
+    "relative_order" : 1,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}
