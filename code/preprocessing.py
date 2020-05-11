@@ -65,9 +65,9 @@ def cleanTextToken(text):
     text = [w for w in text if not w in stop]
 
     # stemmezation
-    from nltk.stem import PorterStemmer 
-    ps = PorterStemmer()
-    text = [ps.stem(word) for word in text]
+    #from nltk.stem import PorterStemmer 
+    #ps = PorterStemmer()
+    #text = [ps.stem(word) for word in text]
     #for i in range(len(text)):
     #    print(text[i],': ',ps.stem(text[i]))
     return text
