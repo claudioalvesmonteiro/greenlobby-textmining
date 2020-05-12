@@ -19,7 +19,7 @@ df.columns = ['participation', 'category', 'comments', 'comments_implementation_
 # generate text
 #=============================
 
-def aggText(df, category, column):
+def aggText(df, category):
     ''' this function return and save the text 
         aggregated by an auxiliary category in
         a pandas dataframe, as json pickle
@@ -28,21 +28,21 @@ def aggText(df, category, column):
     data = df[df['category'] == category]
     # cature text from column
     text = ''
-    for i in range(len(data)):
-        try:
-            text += data[column][i] + '\n'
-        except:
-            print('empty string on line {}.'.format(i)) 
+    for col in df.columns[2:5]:
+        for i in range(len(data)):
+            try:
+                text += data[col][i] + '\n'
+            except:
+                print('empty string on line {}.'.format(i)) 
 
     # apply text cleaning
     text = cleanTextToken(text)
     # create string of text information
     text_info ={'category': category,
-                'column': column,
                 'text': text}
     # save as json
     category = category.replace(' ', '_')
-    with open('data/preprocessed/{}_{}.pickle'.format(column, category), 'wb') as fp:
+    with open('data/preprocessed/{}.pickle'.format(category), 'wb') as fp:
         pickle.dump(text_info, fp, protocol=pickle.HIGHEST_PROTOCOL)
     return text_info
 
@@ -75,5 +75,4 @@ def cleanTextToken(text):
 
 #  apply function to data
 for category in df.category.unique():
-    for col in df.columns[2:5]:
-        aggText(df, category, col)
+    aggText(df, category)

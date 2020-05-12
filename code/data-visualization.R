@@ -39,7 +39,7 @@ for (file in files){
   
     } else {
 
-      # remove pdf from filename
+      # remove csv from filename
       file = gsub('.{4}$', '', file)
       # create png file
       png(file=paste0('results/plots/', file, '.png'), width=500, height=500)
@@ -62,54 +62,35 @@ for (file in files){
 # WORDCOUNT barplots
 #=======================
 
-# function to group sectors count
-groupedWORDCOUNT <- function(variable){
-  
-  # load data
-  d1 = read.csv(paste0('results/tables/',variable, '_academia.csv'))
-  d2 = read.csv(paste0('results/tables/',variable, '_setor empresarial','.csv'))
-  
-  if (variable != 'comments_implementation_means'){
-    d3 = read.csv(paste0('results/tables/',variable, '_terceiro setor','.csv'))
-    d4 = read.csv(paste0('results/tables/',variable, '_setor publico','.csv'))
-    
-    p3 = plotWordCount(d3, 'Third Sector')
-    p4 = plotWordCount(d4, 'Public Sector')
-  }
-
-  # wordcount plots
-  p1 = plotWordCount(d1, 'Academia')
-  p2 = plotWordCount(d2, 'Companies')
-
-  # arrange plots and save
-  if (variable != 'comments_implementation_means'){
-    jovProp  <- ggarrange(p1, p2, p3, p4, ncol = 4, nrow = 1)
-  } else {
-    jovProp  <- ggarrange(p1, p2, ncol = 2, nrow = 1)
-  }
-  
-  ggsave(paste0('wordcount_',variable,'.png'), jovProp, path = "results/plots", width = 12, height = 4, units = "in")
-
-}
-
 # funtion to plot wordcount
 plotWordCount <- function(data, title){
   # select most freq
-  data = data[1:10,]
-  # order to plot
+  data = data[1:15,]
+  # order factors to plot
   data[,1] = factor(data[,1], levels = data[,1][order(data$freq)])
   # plot
-  plot = ggplot(data, aes(x=data[,1], y=as.character(data$freq)))+
-    geom_bar(stat='identity', fill='black')+
+  plot = ggplot(data, aes(x=data[,1], y=data$freq))+
+    geom_bar(stat='identity', fill='#696969')+
+    geom_label(aes(label=data$freq), size=3)+
     labs(y='Freq', x='', title=title)+
     coord_flip()+
     tema_massa()
   return(plot)
 }
 
-# apply to each variable
-variables = c('comments', 'criteria_assumptions_principles', 'comments_implementation_means')
+# load data
+d1 = read.csv('results/tables/academia.csv')
+d2 = read.csv('results/tables/setor_empresarial.csv')
+d3 = read.csv('results/tables/terceiro_setor.csv')
+d4 = read.csv('results/tables/setor_publico.csv')
 
-for (var in variables){
-  groupedWORDCOUNT(var)
-}
+# wordcount plots
+p1 = plotWordCount(d1, 'Academia')
+p2 = plotWordCount(d2, 'Companies')
+p3 = plotWordCount(d3, 'Third Sector')
+p4 = plotWordCount(d4, 'Public Sector')
+
+# arrange plots into one and save
+jovProp  <- ggarrange(p1, p2, p3, p4, ncol = 4, nrow = 1)
+ggsave('wordcount_total.png', jovProp, path = "results/plots", width = 14, height = 4, units = "in")
+

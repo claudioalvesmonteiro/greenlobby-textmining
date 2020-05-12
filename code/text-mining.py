@@ -31,12 +31,12 @@ def autoTokenWordCount(data):
         in a list and save as csv 
     '''
     for dic in data:
-        colname = dic['column'] +'_'+ dic['category']
+        cat_name = dic['category'].replace(' ', '_')
         count = wordcount(dic['text'])
         # rename columns 
-        count.columns = [colname, 'freq']
+        count.columns = [cat_name, 'freq']
         # save as csv
-        count.to_csv('results/tables/{}.csv'.format(colname), index=False)
+        count[0:15].to_csv('results/tables/{}.csv'.format(cat_name), index=False)
 
 
 # wordcount
