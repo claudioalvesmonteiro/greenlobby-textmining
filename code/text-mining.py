@@ -33,7 +33,7 @@ def autoTokenWordCount(data):
         # rename columns 
         count.columns = [cat_name, 'freq']
         # save as csv
-        count[0:15].to_csv('results/tables/{}.csv'.format(cat_name), index=False)
+        count.to_csv('results/tables/{}.csv'.format(cat_name), index=False)
 
 
 def wordcount(txt_list):

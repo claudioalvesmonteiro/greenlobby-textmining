@@ -8,52 +8,49 @@ Text Mining and Natural Language Processing
 # import packages
 import pandas as pd
 import pickle
+import os
 
-# import data
-df = pd.read_csv('data/NDC_database.csv')
+# list files
+files = os.listdir('data/raw')
 
-# select and rename columns 
-df = df[df.columns[[1,2,8,14, 15]] ]
-df.columns = ['participation', 'category', 'comments', 'comments_implementation_means', 'criteria_assumptions_principles']
+# import data and save in list
+data = []
+for file in files:
+        with open('data/raw/{}'.format(file), 'rb') as handle:
+            handle = handle.read().decode().replace('\xa0', '').replace('\n', ' ')
+            data.append(handle)
 
 #=============================
 # generate text
 #=============================
 
-def aggText(df, category):
+def aggText(text_string, category, lemmatizer):
     ''' this function return and save the text 
         aggregated by an auxiliary category in
         a pandas dataframe, as json pickle
     '''
-    # select category data
-    data = df[df['category'] == category]
-    # cature text from column
-    text = ''
-    for col in df.columns[2:5]:
-        for i in range(len(data)):
-            try:
-                text += data[col][i] + '\n'
-            except:
-                print('empty string on line {}.'.format(i)) 
-
-    # apply text cleaning
-    text = cleanTextToken(text)
+    # apply text cleaning to string
+    text = cleanTextToken(text_string, lemmatizer = lemmatizer)
     # create string of text information
     text_info ={'category': category,
                 'text': text}
-    # save as json
-    category = category.replace(' ', '_')
+    # format name of sector for filesave
+    category = category.lower().replace(' ', '_')
+    # save as pickle
     with open('data/preprocessed/{}.pickle'.format(category), 'wb') as fp:
         pickle.dump(text_info, fp, protocol=pickle.HIGHEST_PROTOCOL)
     return text_info
 
 
-def cleanTextToken(text, stemm = False):
+def cleanTextToken(text, lemmatizer = False):
     ''' this function cleans the text and returns 
         the words in tokens
     '''
     # characters to lower
     text = text.lower()
+    # remove numbers
+    text = ''.join([i for i in text if not i.isdigit()]) 
+
     # remove punctuations
     from nltk.tokenize import RegexpTokenizer
     tokenizer = RegexpTokenizer(r'\w+') # preserve alphanumeric and words
@@ -62,19 +59,19 @@ def cleanTextToken(text, stemm = False):
     # remove stopwords
     import nltk
     from nltk.corpus import stopwords
-    stop = set(stopwords.words('portuguese'))
+    stop = set(stopwords.words('english'))
     text = [w for w in text if not w in stop]
 
-    # stemmezation
-    if stemm == True:
-        from nltk.stem import PorterStemmer 
-        ps = PorterStemmer()
-        text = [ps.stem(word) for word in text]
+    # lemmatization
+    if lemmatizer == True:
+        from nltk.stem import WordNetLemmatizer 
+        lemmatizer = WordNetLemmatizer() 
+        text = [lemmatizer.lemmatize(word) for word in text]
     
     # return result
     return text
     
 
 #  apply function to data
-for category in df.category.unique():
-    aggText(df, category)
+for i in range(len(data)):
+    aggText(data[i], files[i][:-4],  lemmatizer = True)

@@ -32,30 +32,34 @@ for (file in files){
   # read data
   data <- read.csv(paste0('results/tables/', file))
     
-  # test if data is empty
-  if (dim(data)[1] == 0){
- 
-     print(paste0(file, ' EMPTY!'))
-  
-    } else {
-
-      # remove csv from filename
-      file = gsub('.{4}$', '', file)
-      # create png file
-      png(file=paste0('results/plots/', file, '.png'), width=500, height=500)
-      
-      # generate wordcloud
-      wordcloud(words = data[,1], 
-                freq = data[,2], 
-                min.freq = 2,
-                random.order=FALSE, 
-                rot.per=0.2, 
-                use.r.layout=T,
-                colors=brewer.pal(8, "Dark2"))
-      
-      # save wordcloud as png  
-      dev.off()
+  # choose wordfreq
+  if (file == 'Academia.csv'){
+    wordfreq = 8
+  } else if (file == 'Third_Sector.csv'){
+    wordfreq=50
+  } else if (file == 'Public_Sector.csv'){
+    wordfreq=12
+  } else {
+    wordfreq = 20
   }
+  
+  # remove csv from filename
+  file = gsub('.{4}$', '', file)
+  # create png file
+  png(file=paste0('results/plots/', file, '.png'), width=500, height=500)
+  
+  # generate wordcloud
+  wordcloud(words = data[,1], 
+            freq = data[,2], 
+            min.freq = wordfreq,
+            random.order=FALSE, 
+            rot.per=0.0, 
+            use.r.layout=T,
+            colors=brewer.pal(8, "Dark2"))
+  
+  # save wordcloud as png  
+  dev.off()
+  
 }
 
 #=======================
@@ -71,7 +75,7 @@ plotWordCount <- function(data, title){
   # plot
   plot = ggplot(data, aes(x=data[,1], y=data$freq))+
     geom_bar(stat='identity', fill='#696969')+
-    geom_label(aes(label=data$freq), size=3)+
+    geom_label(aes(label=data$freq), size=2.6)+
     labs(y='Freq', x='', title=title)+
     coord_flip()+
     tema_massa()
@@ -79,10 +83,10 @@ plotWordCount <- function(data, title){
 }
 
 # load data
-d1 = read.csv('results/tables/academia.csv')
-d2 = read.csv('results/tables/setor_empresarial.csv')
-d3 = read.csv('results/tables/terceiro_setor.csv')
-d4 = read.csv('results/tables/setor_publico.csv')
+d1 = read.csv('results/tables/Academia.csv')
+d2 = read.csv('results/tables/Private_Sector.csv')
+d3 = read.csv('results/tables/Third_Sector.csv')
+d4 = read.csv('results/tables/Public_Sector.csv')
 
 # wordcount plots
 p1 = plotWordCount(d1, 'Academia')
