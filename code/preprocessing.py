@@ -1,8 +1,9 @@
 '''
-Paper XXX
+Paper Green Lobby
+Text Mining and Natural Language Processing
+
 @claudioalvesmonteiro 2020
 '''
-
 
 # import packages
 import pandas as pd
@@ -47,7 +48,7 @@ def aggText(df, category):
     return text_info
 
 
-def cleanTextToken(text):
+def cleanTextToken(text, stemm = False):
     ''' this function cleans the text and returns 
         the words in tokens
     '''
@@ -65,11 +66,12 @@ def cleanTextToken(text):
     text = [w for w in text if not w in stop]
 
     # stemmezation
-    #from nltk.stem import PorterStemmer 
-    #ps = PorterStemmer()
-    #text = [ps.stem(word) for word in text]
-    #for i in range(len(text)):
-    #    print(text[i],': ',ps.stem(text[i]))
+    if stemm == True:
+        from nltk.stem import PorterStemmer 
+        ps = PorterStemmer()
+        text = [ps.stem(word) for word in text]
+    
+    # return result
     return text
     
 

@@ -1,5 +1,6 @@
 '''
-Paper XXX
+Paper Green Lobby
+Text Mining and Natural Language Processing
 
 @claudioalvesmonteiro 2020
 '''
@@ -9,21 +10,17 @@ import pickle
 import os
 import pandas as pd
 
-#=======================
-# wordcount 
-#=======================
-
 # list files
 files = os.listdir('data/preprocessed')
 
-# import dictionaries and save in list
+# import data and save in list
 data = []
 for file in files:
         with open('data/preprocessed/{}'.format(file), 'rb') as handle:
             data.append(pickle.load(handle))
 
 #======================
-# Functions
+# WORDCOUNT
 #=======================
 
 def autoTokenWordCount(data):
@@ -39,8 +36,9 @@ def autoTokenWordCount(data):
         count[0:15].to_csv('results/tables/{}.csv'.format(cat_name), index=False)
 
 
-# wordcount
 def wordcount(txt_list):
+    ''' count words in a list
+    '''
     # loop to count
     wordfreq = {}
     for w in txt_list:
@@ -55,17 +53,3 @@ def wordcount(txt_list):
 
 # execute process and save results
 autoTokenWordCount(data)
-
-#================================================================
-# COMPARAR AS agreg_resp CADA GRUPO COM O DOCUMENTO PDF
-# https://medium.com/@adriensieg/text-similarities-da019229c894
-#=================================================================
-
-# agg to count
-def aggregateText(data, variable, value):
-    list_agg = []
-    for i in range(len(data)):
-        if data[i][variable] == value:
-            for w in data[i]['text']:
-                list_agg.append(w)
-    return list_agg
