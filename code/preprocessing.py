@@ -16,9 +16,10 @@ files = os.listdir('data/raw')
 # import data and save in list
 data = []
 for file in files:
-        with open('data/raw/{}'.format(file), 'rb') as handle:
-            handle = handle.read().decode().replace('\xa0', '').replace('\n', ' ')
-            data.append(handle)
+    print(file)
+    with open('data/raw/{}'.format(file), 'rb') as handle:
+        handle = handle.read().decode().replace('\xa0', '').replace('\n', ' ')
+        data.append(handle)
 
 #=============================
 # generate text

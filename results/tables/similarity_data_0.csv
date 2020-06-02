@@ -1,0 +1,5 @@
+category,jaccard_index_model,glove_model,consine_glove_model
+Academia,0.18115,0.9895662665367126,98.9566
+Private Sector,0.1544,0.9865279793739319,98.6528
+Public Sector,0.16407,0.9869509339332581,98.6951
+Third Sector,0.13788,0.9893878698348999,98.9388

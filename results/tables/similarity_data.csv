@@ -1,0 +1,5 @@
+category,jaccard_index_model,word2vec_glove_model,word2vec_glove_scipy_consine_model
+Academia,18.1154,98.8544,98.8543
+Private Sector,15.4402,98.7738,98.7738
+Public Sector,16.4075,98.6377,98.6377
+Third Sector,13.7879,98.9277,98.9277
